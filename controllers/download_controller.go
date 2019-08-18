@@ -42,6 +42,7 @@ func (dc *DownloadController) Download(w http.ResponseWriter, r *http.Request) {
 		setError(w, yErr)
 		return
 	}
+	w.Header().Set("Content-Type", "application/json")
 	w.Write(b)
 }
 
@@ -62,6 +63,7 @@ func (dc *DownloadController) Status(w http.ResponseWriter, r *http.Request) {
 		setError(w, yErr)
 		return
 	}
+	w.Header().Set("Content-Type", "application/json")
 	w.Write(b)
 }
 
@@ -69,23 +71,17 @@ func (dc *DownloadController) Status(w http.ResponseWriter, r *http.Request) {
 // Handling only 400, 404 and 500 for now
 func setError(w http.ResponseWriter, err error) {
 	yErr := err.(yadaerror.Error)
+	w.Header().Set("Content-Type", "application/json")
 	if yErr.InternalCode >= 4000 && yErr.InternalCode < 4010 {
 		w.WriteHeader(yadaerror.BAD_REQUEST)
-		w.Write(yErr.ToJSONBytes())
-		return
 	}
 	if yErr.InternalCode >= 4040 && yErr.InternalCode < 4050 {
 		w.WriteHeader(yadaerror.BAD_ROUTE)
-		w.Write(yErr.ToJSONBytes())
-		return
 	}
 	if yErr.InternalCode >= 5000 && yErr.InternalCode < 5999 {
 		w.WriteHeader(yadaerror.INTERNAL_ERROR)
-		w.Write(yErr.ToJSONBytes())
-		return
 	} else {
 		w.WriteHeader(yadaerror.INTERNAL_ERROR)
-		w.Write(yErr.ToJSONBytes())
-		return
 	}
+	w.Write(yErr.ToJSONBytes())
 }
