@@ -35,15 +35,18 @@ func (s *Serial) Download() error {
 	for _, url := range s.urls {
 		fileID, err := utils.UUID()
 		if err != nil {
+			s.status = constants.FAILED
 			return err
 		}
 		filePath := fmt.Sprintf("%s%s/%s", constants.DOWNLOAD_PATH, s.id, fileID)
 		err = utils.CreateDir(constants.DOWNLOAD_PATH + s.id)
 		if err != nil {
+			s.status = constants.FAILED
 			return err
 		}
 		err = utils.DownloadFile(filePath, url)
 		if err != nil {
+			s.status = constants.FAILED
 			return err
 		}
 		s.fileMap[url] = filePath

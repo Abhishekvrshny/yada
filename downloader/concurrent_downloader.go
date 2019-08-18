@@ -22,13 +22,16 @@ type job struct {
 
 func (c *Concurrent) Download() error {
 	c.startTime = time.Now()
+	c.status = constants.QUEUED
 	err := utils.CreateDir(constants.DOWNLOAD_PATH + c.id)
 	if err != nil {
+		c.status = constants.FAILED
 		return err
 	}
 	for _, file := range c.urls {
 		fileID, err := utils.UUID()
 		if err != nil {
+			c.status = constants.FAILED
 			return err
 		}
 		filePath := fmt.Sprintf("%s%s/%s", constants.DOWNLOAD_PATH, c.id, fileID)
