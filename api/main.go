@@ -1,9 +1,10 @@
 package main
 
 import (
+	"net/http"
+
 	"github.com/Abhishekvrshny/yada/controllers"
 	"github.com/Abhishekvrshny/yada/downloader"
-	"net/http"
 )
 
 func main() {
@@ -11,9 +12,8 @@ func main() {
 	apiController := controllers.APIController{downloader.NewManager()}
 
 	mux.HandleFunc("/health", controllers.Health)
-	mux.HandleFunc("/download", apiController.Download)
-	mux.HandleFunc("/status/", apiController.Status)
+	mux.HandleFunc("/downloads", apiController.Download)
+	mux.HandleFunc("/downloads/", apiController.Status)
 
 	http.ListenAndServe(":8081", mux)
 }
-

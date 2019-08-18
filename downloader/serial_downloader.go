@@ -2,68 +2,52 @@ package downloader
 
 import (
 	"fmt"
+	"time"
+
 	"github.com/Abhishekvrshny/yada/constants"
 	"github.com/Abhishekvrshny/yada/utils"
-	"time"
 )
 
 type Serial struct {
-	id string
-	startTime time.Time
-	endTime time.Time
-	files []string
-	fileMap map[string]string
-	status constants.Status
+	BaseDownloader
 }
 
-func NewSerial(files []string) (Downloader, error){
+func NewSerial(urls []string) (Downloader, error) {
 	uuid, err := utils.UUID()
 	if err != nil {
 		return nil, err
 	}
 	return &Serial{
-		id : uuid,
-		files: files,
-		fileMap:make(map[string]string),
+		BaseDownloader{
+			id:           uuid,
+			urls:         urls,
+			fileMap:      make(map[string]string),
+			downloadType: constants.SERIAL,
+		},
 	}, nil
 }
 
-func (s *Serial) Download() {
+func (s *Serial) Download() error {
 	s.startTime = time.Now()
-	defer func() {s.endTime = time.Now()}()
+	defer func() { s.endTime = time.Now() }()
 
 	s.status = constants.QUEUED
-	for _, url := range s.files {
+	for _, url := range s.urls {
 		fileID, err := utils.UUID()
 		if err != nil {
-			return
+			return err
 		}
-		filePath := fmt.Sprintf("%s%s/%s",constants.DOWNLOADPATH, s.id, fileID)
-		err = utils.CreateDir(constants.DOWNLOADPATH+s.id)
+		filePath := fmt.Sprintf("%s%s/%s", constants.DOWNLOAD_PATH, s.id, fileID)
+		err = utils.CreateDir(constants.DOWNLOAD_PATH + s.id)
 		if err != nil {
-			return
+			return err
 		}
 		err = utils.DownloadFile(filePath, url)
 		if err != nil {
-			return
+			return err
 		}
 		s.fileMap[url] = fileID
 	}
 	s.status = constants.SUCCESSFUL
-}
-
-func (s *Serial) GetID() string {
-	return s.id
-}
-
-func (s *Serial) GetStartTime() string {
-	return s.startTime.String()
-}
-
-func (s *Serial) GetEndTime() string {
-	return s.endTime.String()
-}
-
-func (s *Serial) GetStatus() string {
-	return string(s.status)
+	return nil
 }

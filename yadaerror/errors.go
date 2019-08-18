@@ -2,11 +2,20 @@ package yadaerror
 
 import "encoding/json"
 
-type HTTPError struct {
-	Message string
+type Error struct {
+	InternalCode int    `json:"internal_code"`
+	Message      string `json:"message"`
 }
 
-func NewHTTPError(httpErr HTTPError) []byte{
-	b, _ :=json.Marshal(httpErr)
+func (h Error) Error() string {
+	return h.Message
+}
+
+func (h Error) ToJSONBytes() []byte {
+	b, _ := json.Marshal(h)
 	return b
+}
+
+func New(msg string, internalCode int) Error {
+	return Error{internalCode, msg}
 }

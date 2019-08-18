@@ -1,8 +1,8 @@
 package models
 
 type DownloadRequest struct {
-	Type string `json:"type"`
-	Files []string `json:"files"`
+	Type string   `json:"type"`
+	URLs []string `json:"urls"`
 }
 
 type DownloadResponse struct {
@@ -10,8 +10,9 @@ type DownloadResponse struct {
 }
 
 type StatusResponse struct {
-	ID string `json:"id"`
-	StartTime string `json:"start_time"`
-	EndTime string `json:"end_time"`
-	Status string `json:"status"`
+	ID           string `json:"id"`
+	StartTime    string `json:"start_time"`
+	EndTime      string `json:"end_time"`
+	Status       string `json:"status"`
+	DownloadType string `json:"download_type"`
 }
