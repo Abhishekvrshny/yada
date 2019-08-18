@@ -11,11 +11,11 @@ import (
 	"github.com/Abhishekvrshny/yada/yadaerror"
 )
 
-type APIController struct {
+type DownloadController struct {
 	DownloadMgr *downloader.Manager
 }
 
-func (ac *APIController) Download(w http.ResponseWriter, r *http.Request) {
+func (dc *DownloadController) Download(w http.ResponseWriter, r *http.Request) {
 	body, err := ioutil.ReadAll(r.Body)
 	if err != nil {
 		yErr := yadaerror.New(err.Error(), yadaerror.HTTP_READ_BODY_FAILED)
@@ -29,7 +29,7 @@ func (ac *APIController) Download(w http.ResponseWriter, r *http.Request) {
 		setError(w, yErr)
 		return
 	}
-	dMgr, err := ac.DownloadMgr.NewDownload(req)
+	dMgr, err := dc.DownloadMgr.NewDownload(req)
 	if err != nil {
 		setError(w, err)
 		return
@@ -45,13 +45,13 @@ func (ac *APIController) Download(w http.ResponseWriter, r *http.Request) {
 	w.Write(b)
 }
 
-func (ac *APIController) Status(w http.ResponseWriter, r *http.Request) {
+func (dc *DownloadController) Status(w http.ResponseWriter, r *http.Request) {
 	id, err := utils.GetIDFromURI(r.RequestURI)
 	if err != nil {
 		setError(w, err)
 		return
 	}
-	status, err := ac.DownloadMgr.GetStatus(id)
+	status, err := dc.DownloadMgr.GetStatus(id)
 	if err != nil {
 		setError(w, err)
 		return

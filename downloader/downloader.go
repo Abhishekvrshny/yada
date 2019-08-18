@@ -13,6 +13,7 @@ type Downloader interface {
 	GetEndTime() string
 	GetStatus() string
 	GetType() string
+	GetFiles() map[string]string
 }
 
 type BaseDownloader struct {
@@ -43,4 +44,8 @@ func (bd *BaseDownloader) GetStatus() string {
 
 func (bd *BaseDownloader) GetType() string {
 	return string(bd.downloadType)
+}
+
+func (bd *BaseDownloader) GetFiles() map[string]string {
+	return bd.fileMap
 }

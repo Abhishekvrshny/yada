@@ -69,6 +69,7 @@ func (c *Concurrent) spawnWorkers() {
 			c.resultChan <- false
 		} else {
 			c.resultChan <- true
+			c.fileMap[job.url] = job.filePath
 		}
 	}
 }

@@ -46,7 +46,7 @@ func (s *Serial) Download() error {
 		if err != nil {
 			return err
 		}
-		s.fileMap[url] = fileID
+		s.fileMap[url] = filePath
 	}
 	s.status = constants.SUCCESSFUL
 	return nil

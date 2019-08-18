@@ -48,6 +48,7 @@ func (mgr *Manager) GetStatus(id string) (*models.StatusResponse, error) {
 			EndTime:      downloader.GetEndTime(),
 			Status:       downloader.GetStatus(),
 			DownloadType: downloader.GetType(),
+			Files:        downloader.GetFiles(),
 		}, nil
 	}
 }
