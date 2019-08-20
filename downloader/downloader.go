@@ -6,6 +6,7 @@ import (
 	"github.com/Abhishekvrshny/yada/constants"
 )
 
+// Downloader is the interface for all download types
 type Downloader interface {
 	Download() error
 	GetID() string
@@ -16,6 +17,7 @@ type Downloader interface {
 	GetFiles() map[string]string
 }
 
+// BaseDownloader holds all download related info
 type BaseDownloader struct {
 	id           string
 	startTime    time.Time

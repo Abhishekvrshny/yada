@@ -11,10 +11,12 @@ import (
 	"github.com/Abhishekvrshny/yada/yadaerror"
 )
 
+// DownloadController handles various download APIs
 type DownloadController struct {
 	DownloadMgr *downloader.Manager
 }
 
+// Download is the HTTP handler for download request
 func (dc *DownloadController) Download(w http.ResponseWriter, r *http.Request) {
 	body, err := ioutil.ReadAll(r.Body)
 	if err != nil {
@@ -46,6 +48,7 @@ func (dc *DownloadController) Download(w http.ResponseWriter, r *http.Request) {
 	w.Write(b)
 }
 
+// Status is the HTTP handler for status request
 func (dc *DownloadController) Status(w http.ResponseWriter, r *http.Request) {
 	id, err := utils.GetIDFromURI(r.RequestURI)
 	if err != nil {

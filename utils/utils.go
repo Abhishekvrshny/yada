@@ -11,6 +11,7 @@ import (
 	"github.com/Abhishekvrshny/yada/yadaerror"
 )
 
+// UUID generates a new UUID
 func UUID() (string, error) {
 	b := make([]byte, 16)
 	_, err := rand.Read(b)
@@ -22,6 +23,7 @@ func UUID() (string, error) {
 	return uuid, nil
 }
 
+// GetIDFromURI parses uri to get ID, for status requests
 func GetIDFromURI(uri string) (string, error) {
 	tokens := strings.Split(uri, "/")
 	if len(tokens) != 3 {
@@ -31,6 +33,7 @@ func GetIDFromURI(uri string) (string, error) {
 	}
 }
 
+// DownloadFile downloads a url to filepath
 func DownloadFile(filepath string, url string) error {
 	resp, err := http.Get(url)
 	if err != nil {
@@ -51,6 +54,7 @@ func DownloadFile(filepath string, url string) error {
 	return nil
 }
 
+// CreateDir to create a dir
 func CreateDir(path string) error {
 	_, err := os.Stat(path)
 	if os.IsNotExist(err) {

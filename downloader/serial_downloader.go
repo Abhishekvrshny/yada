@@ -8,10 +8,13 @@ import (
 	"github.com/Abhishekvrshny/yada/utils"
 )
 
+// Serial implements Downloader interface
+// and is composed of BaseDownloader
 type Serial struct {
 	BaseDownloader
 }
 
+// NewSerial returns an instance of Serial downloader
 func NewSerial(urls []string) (Downloader, error) {
 	uuid, err := utils.UUID()
 	if err != nil {
@@ -27,6 +30,7 @@ func NewSerial(urls []string) (Downloader, error) {
 	}, nil
 }
 
+// Download the files serially
 func (s *Serial) Download() error {
 	s.startTime = time.Now()
 	defer func() { s.endTime = time.Now() }()

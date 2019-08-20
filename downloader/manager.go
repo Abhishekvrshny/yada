@@ -8,14 +8,17 @@ import (
 	"github.com/Abhishekvrshny/yada/yadaerror"
 )
 
+// Manager keeps track of all downloads
 type Manager struct {
 	downloads map[string]Downloader
 }
 
+// NewManager inits a Manager
 func NewManager() *Manager {
 	return &Manager{make(map[string]Downloader)}
 }
 
+// NewDownload returns appropriate Downloader, based on the type of download request
 func (mgr *Manager) NewDownload(request models.DownloadRequest) (Downloader, error) {
 	if strings.ToUpper(request.Type) == constants.SERIAL {
 		s, err := NewSerial(request.URLs)
@@ -36,7 +39,7 @@ func (mgr *Manager) NewDownload(request models.DownloadRequest) (Downloader, err
 		return nil, yadaerror.New("unknown type of download", yadaerror.UNKNOWN_DOWNLOAD_TYPE)
 	}
 }
-
+// GetStatus returns status of a particular download request
 func (mgr *Manager) GetStatus(id string) (*models.StatusResponse, error) {
 	downloader, ok := mgr.downloads[id]
 	if !ok {
